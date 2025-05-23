@@ -1,0 +1,4 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="frendz" tvg-name="Frendz" group-title="Movies",Frendz Channel
+#EXTVLCOPT:http-user-agent=TiviMate
+https://vod.fftv.in/frendz/
