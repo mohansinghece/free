@@ -1,0 +1,28 @@
+name: Update Free.m3u from vod.fftv.in
+
+on:
+  schedule:
+    - cron: "0 */3 * * *" # every 3 hours
+  workflow_dispatch:      # allow manual trigger
+
+jobs:
+  update-m3u:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Fetch new M3U
+      run: |
+        curl -A "TiviMate" https://vod.fftv.in/frendz/ -o free.m3u
+        echo "Adding #EXTM3U if missing..."
+        sed -i '1s/^/#EXTM3U\n/' free.m3u
+
+    - name: Commit and Push
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git add free.m3u
+        git commit -m "Auto update free.m3u from vod.fftv.in" || echo "No changes to commit"
+        git push
